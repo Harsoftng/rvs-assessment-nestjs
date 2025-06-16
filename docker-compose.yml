@@ -1,0 +1,38 @@
+services:
+  app_db:
+    image: postgres:14
+    container_name: app_db
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    ports: [ '${POSTGRES_PORT}:5432' ]
+    networks:
+      - app_network
+
+  app_redis:
+    image: redis:6.2-alpine
+    container_name: app_redis
+    restart: always
+    ports:
+      - "${REDIS_PORT}:6379"
+    environment:
+      - REDIS_PORT=${REDIS_PORT}
+      - REDIS_DATABASES=10
+    networks:
+      - app_network
+    command: redis-server --save 60 1 --loglevel warning
+    volumes:
+      - redis_data:/redis-data
+
+networks:
+  default:
+    driver: bridge
+  app_network:
+    name: app_network
+
+volumes:
+  db_data:
+  redis_data:
