@@ -25,7 +25,6 @@ Tech stack:
 - NestJS
 - TypeScript
 - Redis / PostgreSQL to save data in
-- React
 - Docker
 
 #### Features:
